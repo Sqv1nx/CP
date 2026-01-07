@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef unsigned long long int ull;
+typedef long long int ll;
+typedef double ff;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef pair<int,int> pi;
+#define REP(i,a,b)  for(i=a;i<b;i++)
+#define REPR(i,a,b)  for(i=a;i>b;i--)
+#define F first
+#define S second
+#define PB push_back
+#define MP make_pair
+
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        int n;
+        cin>>n;
+        vi val(n);
+        int i,count_1=0;
+        for(i=0;i<n;i++)
+        {
+            cin>>val[i];
+            if(val[i]==1)
+            {
+                count_1++;
+            }
+        }
+        if(count_1==n)
+        {
+            cout<<"YES"<<'\n';
+        }
+        else
+        {
+            bool zclose=false;
+            for(i=0;i<n-1;i++)
+            {
+                if(val[i]==0 && val[i+1]==0)
+                {
+                    zclose=true;
+                    break;
+                }
+                
+            }
+            if(zclose)
+                {
+                    cout<<"YES"<<'\n';
+                }
+                else
+                {
+                    cout<<"NO"<<'\n';
+                }
+        }
+    }
+    return 0;
+}
