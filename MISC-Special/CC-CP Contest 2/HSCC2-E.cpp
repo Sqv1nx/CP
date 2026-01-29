@@ -20,14 +20,14 @@ int main()
 
     int n, k;
     cin >> n >> k;
-    if (k > n)
+    int mn = __builtin_popcount(n);
+    if (k > n || k < mn)
     {
         cout << "NO" << '\n';
     }
     else
     {
-        bool p2 = false;
-        bool p3 = false;
+        cout << "YES" << '\n';
         int tmp = n;
         int powe = 0;
         while (tmp != 1)
@@ -35,68 +35,40 @@ int main()
             tmp = tmp / 2;
             powe++;
         }
-        tmp = pow(2, powe);
-        if (tmp == n)
+        vi ans(k);
+        int cnt = 0;
+        int tt = pow(2, powe);
+        while (n > 0)
         {
-            p2 = true;
-        }
-        if (tmp + 1 == n)
-        {
-            p3 = true;
-        }
-        if (k == 1 && p2)
-        {
-            cout << "YES" << '\n';
-            cout << n << '\n';
-        }
-        else if (k != 1)
-        {
-            if (k == 2 && !p3)
+            if (n >= tt)
             {
-                cout << "NO";
+                n = n - tt;
+                ans[cnt] = tt;
+                cnt++;
+            }
+            tt = tt / 2;
+        }
+        int i;
+        i = cnt;
+        cnt = 0;
+        while (i < k)
+        {
+            int tmp = ans[cnt];
+            if (tmp != 1)
+            {
+                ans[cnt] = tmp / 2;
+                ans[i] = tmp - ans[cnt];
+                i++;
             }
             else
             {
-                vi ans(k);
-                int cnt = 0;
-                cout << "YES" << '\n';
-                int tt = pow(2, powe);
-                while (n > 0)
-                {
-                    if (n >= tt)
-                    {
-                        n = n - tt;
-                        ans[cnt] = tt;
-                        cnt++;
-                    }
-                    tt = tt / 2;
-                }
-                int i;
-                i = cnt;
-                cnt = 0;
-                while (i < k)
-                {
-                    int tmp = ans[cnt];
-                    if (tmp != 1)
-                    {
-                        ans[cnt] = tmp / 2;
-                        ans[i] = tmp - ans[cnt];
-                        i++;
-                    }
-                    else
-                    {
-                        cnt++;
-                    }
-                }
-                for (i = 0; i < k; i++)
-                {
-                    cout << ans[i] << ' ';
-                }
+                cnt++;
             }
         }
-        else
+        sort(ans.begin(),ans.end());
+        for (i = 0; i < k; i++)
         {
-            cout << "NO" << '\n';
+            cout << ans[i] << ' ';
         }
     }
     return 0;

@@ -31,37 +31,18 @@ int main()
         }
         sort(num.begin(), num.end());
         reverse(num.begin(), num.end());
-        int jyada = 0;
-        while (n > 0)
+        int cnt=1;
+        int ans=0;
+        for(i=0;i<n;i++)
         {
-            int temp = x / num[n - 1];
-            if (temp * num[n - 1] == x && temp <= n)
+            if(num[i]*cnt>=x)
             {
-                for (i = 0; i < temp; i++)
-                {
-                    num.pop_back();
-                }
-                jyada++;
-                n = n - temp;
+                ans++;
+                cnt=0;
             }
-            else if (temp+1 <= n)
-            {
-                temp++;
-                for (i = 0; i < temp; i++)
-                {
-                    num.pop_back();
-                }
-                jyada++;
-                n = n - temp;
-            }
-            else
-            {
-                num.pop_back();
-                n--;
-            }
+            cnt++;
         }
-
-        cout << jyada << '\n';
+        cout<<ans<<'\n';
     }
     return 0;
 }

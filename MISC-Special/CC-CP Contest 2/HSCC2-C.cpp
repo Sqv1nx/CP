@@ -29,21 +29,15 @@ int main()
 
     sort(num.begin(), num.end());
     int maxx = 0;
-    int tmp=0;
+    int j=0;
     int smol = num[0];
     for (i = 0; i < n; i++)
     {
-        if (num[i] - smol <= 5)
+        while(num[i]-num[j]>5)
         {
-            tmp++;
+            j++;
         }
-        else
-        {
-            smol = num[i];
-            
-            tmp=1;
-        }
-        maxx = max(maxx, tmp);
+        maxx = max(maxx, i-j+1);
     }
 
     cout << maxx << '\n';
