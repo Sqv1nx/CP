@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-
+ 
 int main()
 {
     ios_base::sync_with_stdio(false);
@@ -18,7 +18,7 @@ int main()
                 cout << (r * r) + (unsigned long long int)1 - c << '\n';
             else
             {
-                unsigned long long int k = r - 1;
+                unsigned long long int k = r-1;
                 cout << (k * k) + c << '\n';
             }
         }
@@ -28,7 +28,7 @@ int main()
                 cout << (c * c) + (unsigned long long int)1 - r << '\n';
             else
             {
-                unsigned long long int k = c - 1;
+                unsigned long long int k = c-1;
                 cout << (k * k) + r << '\n';
             }
         }
