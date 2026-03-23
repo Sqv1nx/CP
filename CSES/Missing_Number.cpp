@@ -102,73 +102,22 @@ void _print(vector<T> v)
 void solve()
 {
     ll n;
-    cin >> n;
-    vll p(n);
-    f(i, 0, n)
+    ll nums;
+    cin>>n;
+    ll sum=0;
+    ll tsum=(n*(n+1))/2;
+    f(i,0,n-1)
     {
-        cin >> p[i];
+        cin>>nums;;
+        sum+=nums;
     }
-    ll count = 0;
-    ll i = 1;
-    vll rsmall(n);
-    f(i, 0, n)
-    {
-        ll x = 0;
-        f(j, i + 1, n)
-        {
-            if (p[j] < p[i])
-                x++;
-        }
-        rsmall[i] = x;
-    }
-    vll lsmall(n);
-    f(i, 0, n)
-    {
-        ll x = 0;
-        rf(j, i, 0)
-        {
-            if (p[j] < p[i])
-                x++;
-        }
-        lsmall[i] = x;
-    }
-
-    ll pos = max_element(all(p)) - p.begin();
-    while (i < n - 1)
-    {
-        if (i == pos)
-        {
-            if (i - count > (n - 1 - count) / 2)
-            {
-                count += n - 1 - pos;
-                i = i + n - 1 - pos;
-            }
-            else
-            {
-                count += pos - count;
-                i++;
-            }
-        }
-        ll r = 1, l = 1;
-        while (p[i] > p[i - l] && p[i] > p[i + r])
-        {
-            count++;
-            if (lsmall[i] > rsmall[i])
-                l++;
-                
-            else
-                r++;
-        }
-        i = i + r;
-    }
-    cout << count << '\n';
+    cout<<tsum-sum<<'\n';
 }
 
 int main()
 {
     fast_io;
     int t = 1;
-    cin >> t;
     while (t--)
     {
         solve();
