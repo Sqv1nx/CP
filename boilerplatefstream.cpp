@@ -15,6 +15,7 @@
    --------------------------------------------------- */
 
 #include <bits/stdc++.h>
+#include <fstream>
 using namespace std;
 
 // Type & Container Aliases
@@ -45,6 +46,18 @@ using msll = multiset<ll>;
 const ll MOD9 = 1e9 + 7;
 const ll MOD2 = 998244353;
 const ll INF = 1e18;
+
+// File IO — redirects cin/cout to .in/.out via fstream
+// Call setIO("problemname") before any input/output
+ifstream _fin;
+ofstream _fout;
+void setIO(string s)
+{
+    _fin.open(s + ".in");
+    _fout.open(s + ".out");
+    cin.rdbuf(_fin.rdbuf());
+    cout.rdbuf(_fout.rdbuf());
+}
 
 // Modular Arithmetic
 ll mul(ll a, ll b, ll m = MOD9) { return ((a % m) * (b % m)) % m; }
@@ -101,35 +114,15 @@ void _print(vector<T> v)
 
 void solve()
 {
-    ll x;
-    cin >> x;
-    ll ans = 1;
-    ll i;
-    unordered_map<ll, ll> divi;
-    for (i = 2; i * i <= x || x == i; i++)
-    {
-        if (x % i == 0)
-        {
-            divi[i]++;
-            if (divi[i] == 1)
-            {
-                ans = ans * i;
-            }
-            x = x / i;
-            i--;
-        }
-    }
-
-    ans = ans * x;
-    cout << ans << '\n';
+    
 }
 
 int main()
 {
     fast_io;
+    setIO("problemname");
     int t = 1;
     cin >> t;
-
     while (t--)
     {
         solve();
