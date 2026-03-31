@@ -1,0 +1,214 @@
+/****************************************************
+ * /----------------------------------------------\ *
+ * |             Code by sqv1nx_                  | *
+ * \----------------------------------------------/ *
+ ****************************************************/
+
+/* CHEAT SHEET --------------------------------------
+   - Index = lower_bound(all(v), x) - v.begin()
+   - First element > x  = *upper_bound(all(v), x)
+   - Last element <= x = *(--upper_bound(all(v), x))
+   - Multiset Delete: s.erase(s.find(x)) // One instance
+   - PQ Min-Heap: priority_queue<int, vi, greater<int>>
+   - Bit Count: __builtin_popcountll(n) // Count 1s
+   - nCr: (n! / (r! * (n-r)!)) % mod // Use modInverse
+   --------------------------------------------------- */
+
+#include <bits/stdc++.h>
+#include <fstream>
+using namespace std;
+
+// Type & Container Aliases
+using ll = long long;
+using str = string;
+using pii = pair<int, int>;
+using pll = pair<ll, ll>;
+using vi = vector<int>;
+using vll = vector<ll>;
+using mii = map<int, int>;
+using si = set<int>;
+using msll = multiset<ll>;
+
+// Macros
+#define f(i, s, e) for (long long int i = s; i < e; i++)
+#define rf(i, e, s) for (long long int i = e - 1; i >= s; i--)
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(x) (x).begin(), (x).end()
+#define fast_io                       \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);                    \
+    cout.tie(NULL);
+
+// Constants
+const ll MOD9 = 1e9 + 7;
+const ll MOD2 = 998244353;
+const ll INF = 1e18;
+
+// File IO — redirects cin/cout to .in/.out via fstream
+// Call setIO("problemname") before any input/output
+ifstream _fin;
+ofstream _fout;
+void setIO(string s)
+{
+    _fin.open(s + ".in");
+    _fout.open(s + ".out");
+    cin.rdbuf(_fin.rdbuf());
+    cout.rdbuf(_fout.rdbuf());
+}
+
+// Modular Arithmetic
+ll mul(ll a, ll b, ll m = MOD9) { return ((a % m) * (b % m)) % m; }
+ll add(ll a, ll b, ll m = MOD9) { return (a % m + b % m) % m; }
+ll sub(ll a, ll b, ll m = MOD9) { return (a % m - b % m + m) % m; }
+ll expo(ll a, ll b, ll m = MOD9)
+{
+    ll res = 1;
+    a %= m;
+    while (b > 0)
+    {
+        if (b & 1)
+            res = mul(res, a, m);
+        a = mul(a, a, m);
+        b >>= 1;
+    }
+    return res;
+}
+ll modInverse(ll n, ll m = MOD9) { return expo(n, m - 2, m); }
+
+// Debugging
+#ifndef ONLINE_JUDGE
+#define debug(x)       \
+    cerr << #x << " "; \
+    _print(x);         \
+    cerr << endl;
+#else
+#define debug(x)
+#endif
+
+void _print(ll t) { cerr << t; }
+void _print(int t) { cerr << t; }
+void _print(str t) { cerr << t; }
+template <class T, class V>
+void _print(pair<T, V> p)
+{
+    cerr << "{";
+    _print(p.ff);
+    cerr << ",";
+    _print(p.ss);
+    cerr << "}";
+}
+template <class T>
+void _print(vector<T> v)
+{
+    cerr << "[ ";
+    for (T i : v)
+    {
+        _print(i);
+        cerr << " ";
+    }
+    cerr << "]";
+}
+
+void solve()
+{
+    vector<string> farm;
+    string s;
+    while (cin >> s)
+    {
+        farm.pb(s);
+    }
+    ll i, j;
+    pll l, b;
+    f(i, 0, 10)
+    {
+        f(j, 0, 10)
+        {
+            if (farm[i][j] == 'B')
+            {
+                b.ff = i;
+                b.ss = j;
+            }
+            else if (farm[i][j] == 'L')
+            {
+                l.ff = i;
+                l.ss = j;
+            }
+        }
+    }
+    ll ans = 0;
+    while (b != l)
+    {
+        ll sup = (b.ff - l.ff), sright = (b.ss - l.ss);
+        if (sup == 0)
+        {
+            if (farm[l.ff][l.ss + sright/abs(sright)] == 'R')
+            {
+                l.ff++;
+                ans++;
+            }
+            else
+            {
+                l.ss += sright/abs(sright);
+                ans++;
+            }
+        }
+        else if (sright == 0)
+        {
+            if (farm[l.ff + sup/abs(sup)][l.ss] == 'R')
+            {
+                l.ss++;
+                ans++;
+            }
+            else
+            {
+                l.ff += sup/abs(sup);
+                ans++;
+            }
+        }
+        else
+        {
+            if (abs(sup) > abs(sright))
+            {
+                if (farm[l.ff + sup/abs(sup)][l.ss] == 'R')
+                {
+                    l.ss += sright/abs(sright);
+                    ans++;
+                }
+                else
+                {
+                    l.ff += sup/abs(sup);
+                    ans++;
+                }
+            }
+            else
+            {
+                if (farm[l.ff][l.ss + sright/abs(sright)] == 'R')
+                {
+                    l.ff += sup/abs(sup);
+                    ans++;
+                }
+                else
+                {
+                    l.ss += sright/abs(sright);
+                    ans++;
+                }
+            }
+        }
+    }
+    cout << ans-1 << '\n';
+}
+
+int main()
+{
+    fast_io;
+    setIO("buckets");
+    int t = 1;
+    while (t--)
+    {
+        solve();
+    }
+    return 0;
+}
