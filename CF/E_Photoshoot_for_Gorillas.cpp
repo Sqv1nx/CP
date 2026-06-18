@@ -191,39 +191,39 @@ void _print(T t, V... v)
 }
 
 void solve()
-{
-    str q = "";
+{ // made rough formula on page
+    // couldnt made proper,read tut;
+    ll n, m, k;
+    cin >> n >> m >> k;
+    ll nm;
+    cin >> nm;
+    vll gh(nm);
+    f(i, 0, nm)
+    {
+        cin >> gh[i];
+    }
+    sort(all(gh));
+    reverse(all(gh));
+    map<ll, ll, greater<ll>> fac;
+    f(i, 0, n)
+    {
+        f(j, 0, m)
+        {
+            fac[(min(i, n - k) - max((ll)-1, i - k)) * (min(j, m - k) - max((ll)-1, j - k))]++;
+        }
+    }
+    auto it = fac.begin();
+    ll idx = 0;
     ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    while (idx < nm)
     {
-        if (x == '1' || x == '3')
-        {
-            q += '1';
-        }
-        else if (x == '2')
-        {
-            q += '2';
-        }
-        else
-        {
-            ans++;
-        }
+        ans += gh[idx] * (it->ff);
+        idx++;
+        (it->ss)--;
+        if ((it->ss) == 0)
+            it++;
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
-    {
-        if(x=='1')
-        o++;
-        if(x=='2')
-        {
-            d=min(o,d+1);
-        }
-    }
-    cout << d+ans << '\n';
+    cout << ans << '\n';
 }
 
 int main()

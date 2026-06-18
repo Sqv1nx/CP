@@ -192,38 +192,95 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
-    ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    ll n, k;
+    cin >> n >> k;
+    map<ll, ll> z;
+    vll num(n);
+    set<ll> d;
+    f(i, 0, n)
     {
-        if (x == '1' || x == '3')
+        ll x;
+        cin >> x;
+        num[i] = x;
+        z[x]++;
+        if (z[x] > 1)
         {
-            q += '1';
+            d.insert(x);
         }
-        else if (x == '2')
+    }
+    ll key = n;
+    sort(all(num));
+    f(i, 0, n)
+    {
+        if (z[i] == 0)
         {
-            q += '2';
+            key = i;
+            break;
+        }
+    }
+    f(i, 0, n)
+    {
+        if (d.find(num[i]) != d.end() || num[i] > key)
+        {
+            z[num[i]]--;
+            if(z[num[i]]==0)
+            {
+                d.erase(num[i]);
+            }
+            num[i] = key;
+            z[key]++;
+            if(z[key]>1)
+            {
+                d.insert(key);
+            }
+        }
+    }
+    debug(z);
+    f(i, 0, n)
+    {
+        if (z[i] == 0)
+        {
+            key = min(key, i);
+            break;
+        }
+    }
+    ll ans = 0;
+    sort(all(num));
+    debug(num);
+    debug(key);
+    k--;
+    if (k > 0 && !d.empty())
+    {
+        ll sf = n - 1;
+        f(i, 0, n)
+        {
+            if (num[i] >= key)
+            {
+                sf = i - 1;
+                break;
+            }
+        }
+        if (num[min(sf + 1, n - 1)] == key)
+            k--;
+        ans += ((sf) * (sf + 1) / 2);
+        ll temp = n - (sf + 1);
+        if (k % 2 == 1)
+        {
+            ans += temp * key;
         }
         else
         {
-            ans++;
+            ans += temp * (key + 1);
         }
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
+    else
     {
-        if(x=='1')
-        o++;
-        if(x=='2')
+        f(i, 0, n)
         {
-            d=min(o,d+1);
+            ans += num[i];
         }
     }
-    cout << d+ans << '\n';
+    cout << ans << '\n';
 }
 
 int main()

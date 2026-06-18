@@ -192,38 +192,35 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
-    ll ans = 0;
+    ll n, k;
+    cin >> n >> k;
     str s;
     cin >> s;
-    for (auto x : s)
+    ll c = 0;
+    f(i, 0, n)
     {
-        if (x == '1' || x == '3')
-        {
-            q += '1';
-        }
-        else if (x == '2')
-        {
-            q += '2';
-        }
-        else
-        {
-            ans++;
-        }
+        if (s[i] == '1')
+            c++;
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
+    f(i, 0, n - k)
     {
-        if(x=='1')
-        o++;
-        if(x=='2')
+        if (s[i] == '1')
         {
-            d=min(o,d+1);
+            s[i] = '0' + (1 + s[i] - '0') % 2;
+            s[i + k] = '0' + (1 + s[i + k] - '0') % 2;
+            debug(s[i]);
+            debug(s[i + k]);
+            ll t = (s[i] - '0' + s[i + k] - '0');
+            if (t == 0)
+                c = c - 2;
         }
+        debug(i);
+        debug(c);
     }
-    cout << d+ans << '\n';
+    if (c == 0)
+        cout << "YES" << '\n';
+    else
+        cout << "NO" << '\n';
 }
 
 int main()

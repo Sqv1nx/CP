@@ -190,40 +190,58 @@ void _print(T t, V... v)
     _print(v...);
 }
 
+bool checkwin(vll gap, ll h, ll poi)
+{
+    ll temp = 0;
+    for (auto x : gap)
+    {
+        temp += min(poi, x);
+    }
+    temp+=poi;
+    if (temp >= h)
+        return true;
+
+    return false;
+}
 void solve()
 {
-    str q = "";
-    ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    ll n, h;
+    cin >> n >> h;
+    vll tem(n);
+    f(i, 0, n)
     {
-        if (x == '1' || x == '3')
-        {
-            q += '1';
-        }
-        else if (x == '2')
-        {
-            q += '2';
-        }
-        else
-        {
-            ans++;
-        }
+        cin >> tem[i];
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
+    if (n == 1)
     {
-        if(x=='1')
-        o++;
-        if(x=='2')
-        {
-            d=min(o,d+1);
-        }
+        cout << h << '\n';
     }
-    cout << d+ans << '\n';
+    else
+    {
+        vll gap(n - 1);
+        f(i, 0, n - 1)
+        {
+            gap[i] = tem[i + 1] - tem[i];
+        }
+        ll hi = 1e18;
+        ll lo = 0;
+        ll ans = INF;
+        while (lo <= hi)
+        {
+            ll m = lo + (hi - lo) / 2;
+            bool jeeta = checkwin(gap, h, m);
+            if (jeeta)
+            {
+                ans = min(m, ans);
+                hi = m - 1;
+            }
+            else
+            {
+                lo = m + 1;
+            }
+        }
+        cout << ans << '\n';
+    }
 }
 
 int main()

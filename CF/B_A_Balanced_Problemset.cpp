@@ -154,6 +154,7 @@ void setIO(string s)
 #endif
 
 void __print(ll t) { cerr << t; }
+void __print(double t) { cerr << t; }
 void __print(int t) { cerr << t; }
 void __print(str t) { cerr << '"' << t << '"'; }
 void __print(char t) { cerr << "'" << t << "'"; }
@@ -192,38 +193,30 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
-    ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    ll n, x;
+    cin >> n >> x;
+    // numtheo gon
+    vll num;
+    for (ll i = 1; i * i <= n; i++)
     {
-        if (x == '1' || x == '3')
+        if (n % i == 0)
         {
-            q += '1';
-        }
-        else if (x == '2')
-        {
-            q += '2';
-        }
-        else
-        {
-            ans++;
+            num.pb(i);
         }
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
+    ll ans = 1;
+    for (auto p : num)
     {
-        if(x=='1')
-        o++;
-        if(x=='2')
+        if (p * x <= n)
         {
-            d=min(o,d+1);
+            ans = max(ans, p);
+        }
+        if(n/p * x<=n)
+        {
+            ans=max(ans,n/p);
         }
     }
-    cout << d+ans << '\n';
+    cout << ans << '\n';
 }
 
 int main()

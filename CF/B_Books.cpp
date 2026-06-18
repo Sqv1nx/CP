@@ -192,38 +192,29 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
+    ll n, t;
+    cin >> n >> t;
+    vll books(n);
+    f(i, 0, n)
+    {
+        cin >> books[i];
+    }
+    // quack the questions english 19,32,038 times
+    // simple slider
     ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    ll s = 0;
+    ll j = 0;
+    f(i, 0, n)
     {
-        if (x == '1' || x == '3')
+        while (j < n && s + books[j] <= t)
         {
-            q += '1';
+            s += books[j];
+            j++;
         }
-        else if (x == '2')
-        {
-            q += '2';
-        }
-        else
-        {
-            ans++;
-        }
+        ans = max(ans, j - i);
+        s -= books[i];
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
-    {
-        if(x=='1')
-        o++;
-        if(x=='2')
-        {
-            d=min(o,d+1);
-        }
-    }
-    cout << d+ans << '\n';
+    cout << ans << '\n';
 }
 
 int main()
@@ -234,7 +225,6 @@ int main()
     // precompute_fib();
     // setIO("problemname");
     int t = 1;
-    cin >> t;
     while (t--)
     {
         solve();

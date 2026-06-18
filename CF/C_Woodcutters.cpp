@@ -192,38 +192,27 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
-    ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    ll n;
+    cin >> n;
+    vpll tree(n);
+    f(i, 0, n)
     {
-        if (x == '1' || x == '3')
-        {
-            q += '1';
-        }
-        else if (x == '2')
-        {
-            q += '2';
-        }
-        else
+        cin >> tree[i].ff >> tree[i].ss;
+    }
+    ll ans = min((ll)2,n);
+    f(i, 1, n - 1)
+    {
+        if (tree[i].ff - tree[i - 1].ff > tree[i].ss)
         {
             ans++;
         }
-    }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
-    {
-        if(x=='1')
-        o++;
-        if(x=='2')
-        {
-            d=min(o,d+1);
+        else if (tree[i + 1].ff - tree[i].ff > tree[i].ss)
+        { 
+            ans++;
+            tree[i].ff += tree[i].ss;
         }
     }
-    cout << d+ans << '\n';
+    cout << ans << '\n';
 }
 
 int main()
@@ -234,7 +223,6 @@ int main()
     // precompute_fib();
     // setIO("problemname");
     int t = 1;
-    cin >> t;
     while (t--)
     {
         solve();

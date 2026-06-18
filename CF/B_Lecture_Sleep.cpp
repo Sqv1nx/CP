@@ -192,38 +192,34 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
-    ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    ll n, k;
+    cin >> n >> k;
+    vll num(n), pre(n), pr(n, 0), sleep(n);
+    f(i, 0, n)
     {
-        if (x == '1' || x == '3')
-        {
-            q += '1';
-        }
-        else if (x == '2')
-        {
-            q += '2';
-        }
-        else
-        {
-            ans++;
-        }
+        cin >> num[i];
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
+    f(i, 0, n)
     {
-        if(x=='1')
-        o++;
-        if(x=='2')
-        {
-            d=min(o,d+1);
-        }
+        cin >> sleep[i];
     }
-    cout << d+ans << '\n';
+    pre[0] = num[0];
+    pr[0] = num[0] * sleep[0];
+    f(i, 1, n)
+    {
+        pre[i] = pre[i - 1] + num[i];
+        pr[i] = pr[i - 1] + sleep[i] * num[i];
+    }
+    ll ans = -INF;
+    f(i, 0, n)
+    {
+        ll t = min(n - 1, i + k - 1);
+        ll temp = 0;
+        temp += pre[t] - pre[i] + num[i];
+        temp += pr[n - 1] - pr[t] + pr[i] - sleep[i] * num[i];
+        ans = max(ans, temp);
+    }
+    cout << ans << '\n';
 }
 
 int main()
@@ -234,7 +230,6 @@ int main()
     // precompute_fib();
     // setIO("problemname");
     int t = 1;
-    cin >> t;
     while (t--)
     {
         solve();

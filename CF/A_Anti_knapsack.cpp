@@ -192,38 +192,24 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
-    ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    ll n, k;
+    cin >> n >> k;
+    set<ll> choose;
+    f(i, 1, n+1)
     {
-        if (x == '1' || x == '3')
+        if (i > k)
+            choose.insert(i);
+        else if (i < k)
         {
-            q += '1';
-        }
-        else if (x == '2')
-        {
-            q += '2';
-        }
-        else
-        {
-            ans++;
+            choose.insert(max(i, k - i));
         }
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
+    cout << choose.size() << '\n';
+    for (auto x : choose)
     {
-        if(x=='1')
-        o++;
-        if(x=='2')
-        {
-            d=min(o,d+1);
-        }
+        cout << x << ' ';
     }
-    cout << d+ans << '\n';
+    cout << '\n';
 }
 
 int main()

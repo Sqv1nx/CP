@@ -192,38 +192,56 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
-    ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    ll n;
+    cin >> n;
+    vll track(n);
+    f(i, 0, n)
     {
-        if (x == '1' || x == '3')
+        cin >> track[i];
+    }
+    vll pret(n + 1);
+    pret[0] = 0;
+    f(i, 1, n + 1)
+    {
+        pret[i] = pret[i - 1] + track[i - 1];
+    }
+    debug(track);
+    debug(pret);
+    ll q;
+    cin >> q;
+    while (q--)
+    {
+        ll l, u;
+        cin >> l >> u;
+        ll ans;
+        auto it = upper_bound(all(pret), u + pret[l - 1]);
+        if (it == pret.end())
         {
-            q += '1';
-        }
-        else if (x == '2')
-        {
-            q += '2';
+            ans = n;
         }
         else
         {
-            ans++;
+            ll k = *it;
+            k -= pret[l - 1];
+            ll cnt;
+            cnt = u * k - ((k * (k - 1)) / 2);
+            debug(cnt);
+            ans = it - pret.begin();
+            debug(ans);
+            if (ans - 1 >= l)
+            {
+                it--;
+                k = *it;
+                k -= pret[l - 1];
+                if (cnt <= u * k - ((k * (k - 1)) / 2))
+                {
+                    ans = it - pret.begin();
+                }
+            }
         }
+        cout << ans << ' ';
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
-    {
-        if(x=='1')
-        o++;
-        if(x=='2')
-        {
-            d=min(o,d+1);
-        }
-    }
-    cout << d+ans << '\n';
+    cout << '\n';
 }
 
 int main()

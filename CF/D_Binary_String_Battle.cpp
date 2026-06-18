@@ -192,38 +192,26 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
-    ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    ll n, k;
+    cin >> n >> k;
+    vector<char> s(n);
+    ll c = 0;
+    f(i, 0, n)
     {
-        if (x == '1' || x == '3')
+        cin >> s[i];
+        if (s[i] == '1')
         {
-            q += '1';
-        }
-        else if (x == '2')
-        {
-            q += '2';
-        }
-        else
-        {
-            ans++;
+            c++; // omg language mentioned
         }
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
+    if (c <= k || k > n / 2)
     {
-        if(x=='1')
-        o++;
-        if(x=='2')
-        {
-            d=min(o,d+1);
-        }
+        cout << "Alice" << '\n';
     }
-    cout << d+ans << '\n';
+    else
+    {
+        cout << "Bob" << '\n';
+    }
 }
 
 int main()

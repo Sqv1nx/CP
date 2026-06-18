@@ -192,38 +192,38 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
-    ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    ll n;
+    cin >> n;
+    vll num(n + 1);
+    vll order(n + 1);
+    vll pre(n + 1);
+    pre[0] = 0;
+    queue<ll> posl;
+    stack<ll> posr;
+    f(i, 1, n + 1)
     {
-        if (x == '1' || x == '3')
-        {
-            q += '1';
-        }
-        else if (x == '2')
-        {
-            q += '2';
-        }
+        cin >> num[i];
+        pre[i] = num[i] + pre[i - 1];
+    }
+    f(i, 1, n + 1)
+    {
+        char x;
+        cin >> x;
+        if (x == 'L')
+            posl.push(i);
         else
-        {
-            ans++;
-        }
+            posr.push(i);
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
+    ll ans = 0;
+    while (true)
     {
-        if(x=='1')
-        o++;
-        if(x=='2')
-        {
-            d=min(o,d+1);
-        }
+        if(posl.empty()||posr.empty()||posr.top()<posl.front())
+        break;
+        ans += pre[posr.top()] - pre[posl.front() - 1];
+        posl.pop();
+        posr.pop();
     }
-    cout << d+ans << '\n';
+    cout << ans << '\n';
 }
 
 int main()

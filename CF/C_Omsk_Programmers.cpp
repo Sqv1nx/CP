@@ -192,38 +192,45 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
+    ll a, b, x;
+    cin >> a >> b >> x;
     ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    if (a != b)
     {
-        if (x == '1' || x == '3')
+        if (a > b)
         {
-            q += '1';
+            ll t = a;
+            a = b;
+            b = t;
         }
-        else if (x == '2')
+    }
+    while (true)
+    {
+        ll t = a + b;
+        b = max(a, b);
+        a = t - b;
+        ll temp = min(b - a, min(abs(b / x - a) + 1, abs    (b / x - a / x) + 2));
+        debug(temp);
+        if (temp == b - a)
         {
-            q += '2';
+            ans += b - a;
+            break;
+        }
+        else if (abs(b / x - a) + 1 == temp)
+        {
+            temp = (b / x - a) + 1;
+            ans += 1;
+            b = b / x;
         }
         else
         {
-            ans++;
+            temp = (b / x - a / x) + 2;
+            ans += 2;
+            b = b / x;
+            a = a / x;
         }
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
-    {
-        if(x=='1')
-        o++;
-        if(x=='2')
-        {
-            d=min(o,d+1);
-        }
-    }
-    cout << d+ans << '\n';
+    cout << ans << '\n';
 }
 
 int main()

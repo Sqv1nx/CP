@@ -192,38 +192,41 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
-    ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    ll n, m;
+    cin >> n >> m;
+    vector<str> og(n);
+    vector<str> ng(n - 1);
+    f(i, 0, n)
     {
-        if (x == '1' || x == '3')
+        cin >> og[i];
+    }
+    f(i, 0, n - 1)
+    {
+        cin >> ng[i];
+    }
+    str ans = "";
+    f(i, 0, m)
+    {
+        map<char, ll> mp;
+        f(j, 0, n)
         {
-            q += '1';
+            mp[og[j][i]]++;
         }
-        else if (x == '2')
+        f(j, 0, n - 1)
         {
-            q += '2';
+            mp[ng[j][i]]--;
         }
-        else
+        for (auto [a, b] : mp)
         {
-            ans++;
+            if (b == 1)
+            {
+                ans += a;
+                break;
+            }
         }
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
-    {
-        if(x=='1')
-        o++;
-        if(x=='2')
-        {
-            d=min(o,d+1);
-        }
-    }
-    cout << d+ans << '\n';
+    cout << ans << '\n';
+    cout.flush();
 }
 
 int main()

@@ -192,38 +192,49 @@ void _print(T t, V... v)
 
 void solve()
 {
-    str q = "";
-    ll ans = 0;
-    str s;
-    cin >> s;
-    for (auto x : s)
+    ll k, x;
+    cin >> k >> x;
+    ll a = 1, b = 1;
+    while (k--)
     {
-        if (x == '1' || x == '3')
+        a *= 2;
+        b *= 2;
+    }
+    bool ulta = false;
+    vll ans;
+    if (x > (a + b - x))
+    {
+        ulta = true;
+        x = a + b - x;
+    }
+    ll y = a + b - x;
+    while (x != y)
+    {
+        if (x < y)
         {
-            q += '1';
-        }
-        else if (x == '2')
-        {
-            q += '2';
+            y -= x;
+            x += x;
+            ans.pb(1);
         }
         else
         {
-            ans++;
+            x -= y;
+            y += y;
+            ans.pb(2);
         }
     }
-    ll o=0;
-    ll d=0;
-    debug(ans);
-    for (auto x : q)
+    reverse(all(ans));
+    cout << ans.size() << '\n';
+    for (auto x : ans)
     {
-        if(x=='1')
-        o++;
-        if(x=='2')
-        {
-            d=min(o,d+1);
-        }
+        if (!ulta)
+            cout << x << ' ';
+        else if (x == 1)
+            cout << 2 << ' ';
+        else
+            cout << 1 << ' ';
     }
-    cout << d+ans << '\n';
+    cout << '\n';
 }
 
 int main()
