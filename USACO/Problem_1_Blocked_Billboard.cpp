@@ -433,17 +433,56 @@ void _print(T t, V... v)
     _print(v...);
 }
 
+struct rec
+{
+    ll lx, ly, ux, uy;
+};
+pll checkin(rec &a, ll x, ll y)
+{
+    if (x < a.lx && y < a.ly)
+        return {a.lx, a.ly};
+    if (x < a.lx && y <= a.uy)
+        return {a.lx, y};
+    if (x < a.lx && y > a.uy)
+        return {a.lx, a.uy};
+
+    if (x <= a.ux && y < a.ly)
+        return {x, a.ly};
+    if (x <= a.ux && y <= a.uy)
+        return {x, y};
+    if (x <= a.ux && y > a.uy)
+        return {x, a.uy};
+
+    if (x > a.ux && y < a.ly)
+        return {a.ux, a.ly};
+    if (x > a.ux && y <= a.uy)
+        return {a.ux, y};
+    if (x > a.ux && y > a.uy)
+        return {a.ux, a.uy};
+}
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll a, b, c, d;
+    vector<rec> board(3);
+    f(i, 0, 3)
     {
-        cin >> num[i];
+        cin >> a >> b >> c >> d;
+        board[i] = {a, b, c, d};
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    ll ans = 0;
+    auto [x, y, z, w] = board[2];
+    tie(a,b)= checkin(board[0], x, y);
+    tie(c,d) = checkin(board[0], z, w);
+    ll u = (c - a) * (d - b);
+    ll v = (board[0].ux - board[0].lx) * (board[0].uy - board[0].ly);
+    ans += v - u;
+    tie(a,b) = checkin(board[1], x, y);
+    tie(c,d) = checkin(board[1], z, w);
+    u = (c - a) * (d - b);
+    v = (board[1].ux - board[1].lx) * (board[1].uy - board[1].ly);
+    ans += v - u;
+
+    cout << ans << '\n';
 }
 
 int main()
@@ -452,7 +491,7 @@ int main()
     // sieve();
     // precompute_factorials();
     // precompute_fib();
-    // setIO("problemname");
+    setIO("billboard");
     int t = 1;
     while (t--)
     {

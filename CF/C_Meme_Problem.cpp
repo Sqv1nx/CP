@@ -435,15 +435,26 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll d;
+    cin >> d;
+    ll p = d * d - 4 * d;
+    double x = -1;
+    if (p >= 0)
     {
-        cin >> num[i];
+        x = sqrt((double)p);
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    if (abs(x + 1.0) < 10e-6)
+    {
+        cout << "N" << '\n';
+    }
+    else
+    {
+        double a = ((double)d + x) / (2.0);
+        double b = ((double)d - x) / (2.0);
+        cout << "Y" << ' ';
+        cout << fixed << setprecision(10) << a << ' ';
+        cout << fixed << setprecision(10) << b << '\n';
+    }
 }
 
 int main()
@@ -454,6 +465,7 @@ int main()
     // precompute_fib();
     // setIO("problemname");
     int t = 1;
+    cin >> t;
     while (t--)
     {
         solve();

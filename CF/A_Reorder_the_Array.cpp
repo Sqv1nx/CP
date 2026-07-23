@@ -435,15 +435,32 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n;
+    cin >> n;
+    map<ll, pll> freq;
+    ll prev = 0;
+    f(i, 0, n)
     {
-        cin >> num[i];
+        ll x;
+        cin >> x;
+        freq[x].ff++;
+        freq[x].ss++;
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    ll cnt = 0;
+    for (auto [a, b] : freq)
+    {
+        freq[a].ss = prev;
+        prev = freq[a].ff + freq[a].ss;
+    }
+    debug(freq);
+    for (auto [a, b] : freq)
+    {
+        freq[a].ss-=cnt;
+        b.ss-=cnt;
+        cnt+=min(b.ff,b.ss);
+    }
+    debug(freq);
+    cout << cnt << '\n';
 }
 
 int main()

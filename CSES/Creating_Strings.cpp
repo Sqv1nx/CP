@@ -432,18 +432,30 @@ void _print(T t, V... v)
         cerr << ", ";
     _print(v...);
 }
+// subsetbitmask
+// for (int b = 0; b < (1<<n); b++) {
+// vector<int> subset;
+// for (int i = 0; i < n; i++) {
+// if (b&(1<<i)) subset.push_back(i);
+// }
+// }
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    str s;
+    cin >> s;
+    sort(all(s));
+    vector<str> pos;
+    pos.pb(s);
+    while (next_permutation(all(s)))
     {
-        cin >> num[i];
+        pos.pb(s);
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    cout << pos.size() << '\n';
+    for (auto x : pos)
+    {
+        cout << x << '\n';
+    }
 }
 
 int main()

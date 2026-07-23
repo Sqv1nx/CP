@@ -435,15 +435,26 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n, m, a, b;
+    cin >> n >> m >> a >> b;
+    ll cnt = INF;
+    vpll pos={{a,m},{n+1-a,m},{n,b},{n,m+1-b}};
+    for(auto [x,y]:pos)
     {
-        cin >> num[i];
+        ll tmp=0;
+        while(x>1)
+        {
+            tmp++;
+            x=(x+1)/2;
+        }
+        while(y>1)
+        {
+            tmp++;
+            y=(y+1)/2;
+        }
+        cnt=min(cnt,tmp);
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    cout << cnt+1 << '\n';
 }
 
 int main()
@@ -454,6 +465,7 @@ int main()
     // precompute_fib();
     // setIO("problemname");
     int t = 1;
+    cin >> t;
     while (t--)
     {
         solve();

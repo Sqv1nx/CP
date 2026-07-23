@@ -253,6 +253,33 @@ vector<T> compress(vector<T> &a)
 template <typename T>
 T decompress(int rank, const vector<T> &vals) { return vals[rank - 1]; }
 
+// --- Subsets (Bitmask + Backtracking) ---
+// Bitmask: iterate all 2^n subsets via bit i of mask => include element i
+void allSubsetsBitmask(int n)
+{
+    for (int b = 0; b < (1 << n); b++)
+    {
+        vi subset;
+        for (int i = 0; i < n; i++)
+            if (b & (1 << i))
+                subset.pb(i);
+        // process subset
+    }
+}
+// Backtracking: include/exclude recursion, generates all 2^n subsets
+void subsetsBacktrack(int i, int n, vi &cur, vector<vi> &all)
+{
+    if (i == n)
+    {
+        all.pb(cur);
+        return;
+    }
+    subsetsBacktrack(i + 1, n, cur, all); // exclude element i
+    cur.pb(i);                            // include element i
+    subsetsBacktrack(i + 1, n, cur, all);
+    cur.pop_back(); // backtrack
+}
+
 // --- Fenwick Tree (BIT) ---
 struct Fenwick
 {
@@ -435,15 +462,90 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n;
+    cin >> n;
+    if (n <= 5)
     {
-        cin >> num[i];
+        if (n == 2 || n == 3)
+        {
+            cout << "NO SOLUTION" << '\n';
+        }
+        if (n == 1)
+            cout << 1 << '\n';
+        if (n == 5)
+            cout << "1 3 5 2 4" << '\n';
+        if (n == 4)
+            cout << "2 4 1 3" << '\n';
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    else
+    {
+        vll ans;
+        vector<bool> used(n + 2, false);
+        ll curr = 1;
+        ll remaining = n;
+        while (remaining > 5)
+        {
+            if (ans.empty())
+            {
+                ans.pb(curr);
+                used[curr] = true;
+                remaining--;
+            }
+            else
+            {
+                while (curr <= n && used[curr])
+                {
+                    curr++;
+                }
+                ll y = ans.back();
+                ll pick = curr;
+                while (pick <= n && (used[pick] || abs(pick - y) == 1))
+                {
+                    pick++;
+                }
+                ans.pb(pick);
+                used[pick] = true;
+                remaining--;
+            }
+        }
+        ll j = 0;
+        map<char,ll> perm;
+        for (ll i = 1; i <= n; i++)
+        {
+            if (!used[i])
+            {
+                perm['a' + j] = i;
+                j++;
+            }
+        }
+        str ss = "abcde";
+        do
+        {
+            bool dn = true;
+            ll bruh = (*(--ans.end()));
+            f(i, 0, 5)
+            {
+                if (i == 0 && abs(bruh - (perm[ss[i]])) == 1)
+                {
+                    dn = false;
+                }
+                if (i > 0 && abs((perm[ss[i - 1]]) - (perm[ss[i]]) == 1))
+                    dn = false;
+                if (i < n - 1 && abs((perm[ss[i + 1]]) - (perm[ss[i]]) == 1))
+                    dn = false;
+            }
+            if (dn)
+                break;
+        } while (next_permutation(all(ss)));
+        for (auto x : ss)
+        {
+            ans.pb(perm[x]);
+        }
+        for (auto x : ans)
+        {
+            cout << x << ' ';
+        }
+    }
 }
 
 int main()

@@ -435,15 +435,39 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n, k;
+    cin >> n >> k;
+    vll num(n);
+    f(i, 0, n)
     {
         cin >> num[i];
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    ll ans = 0;
+    ll bagfree = 0;
+    vb crry(n, false);
+    ans += num[0] / k;
+    num[0] = num[0] % k;
+    if (num[0] > 0)
+        crry[0] = true;
+
+    f(i, 1, n)
+    {
+        ll cnt = num[i] + crry[i - 1] * num[i - 1];
+        ans += cnt / k;
+        num[i] = cnt % k;
+        if (num[i] > 0)
+        {
+            crry[i] = true;
+        }
+        if (crry[i - 1] && cnt < k)
+        {
+            ans += 1;
+            crry[i] = false;
+        }
+    }
+    if (crry[n-1])
+        ans += 1;
+    cout << ans << '\n';
 }
 
 int main()

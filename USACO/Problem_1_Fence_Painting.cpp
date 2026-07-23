@@ -435,15 +435,20 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll a, b;
+    cin >> a >> b;
+    ll c, d;
+    cin >> c >> d;
+    ll ans = 0;
+    if (d < a || c > b)
     {
-        cin >> num[i];
+        ans += (d - c) + (b - a);
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    else
+    {
+        ans += max(b, d) - min(a, c);
+    }
+    cout << ans << '\n';
 }
 
 int main()
@@ -452,7 +457,7 @@ int main()
     // sieve();
     // precompute_factorials();
     // precompute_fib();
-    // setIO("problemname");
+    setIO("paint");
     int t = 1;
     while (t--)
     {

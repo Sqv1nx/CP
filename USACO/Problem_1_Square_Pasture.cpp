@@ -435,15 +435,20 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
-    {
-        cin >> num[i];
-    }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    ll l, r, u, dw;
+    ll a, b, c, d;
+    cin >> a >> b >> c >> d;
+    l = min(a, c);
+    r = max(a, c);
+    u = max(b, d);
+    dw = min(b, d);
+    cin >> a >> b >> c >> d;
+    l = min({l, a, c});
+    r = max({r, a, c});
+    u = max({u, b, d});
+    dw = min({dw, b, d});
+    ll t = max(r - l, u - dw);
+    cout << t * t << '\n';
 }
 
 int main()
@@ -452,7 +457,7 @@ int main()
     // sieve();
     // precompute_factorials();
     // precompute_fib();
-    // setIO("problemname");
+    setIO("square");
     int t = 1;
     while (t--)
     {

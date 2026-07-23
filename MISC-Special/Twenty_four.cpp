@@ -253,6 +253,33 @@ vector<T> compress(vector<T> &a)
 template <typename T>
 T decompress(int rank, const vector<T> &vals) { return vals[rank - 1]; }
 
+// --- Subsets (Bitmask + Backtracking) ---
+// Bitmask: iterate all 2^n subsets via bit i of mask => include element i
+void allSubsetsBitmask(int n)
+{
+    for (int b = 0; b < (1 << n); b++)
+    {
+        vi subset;
+        for (int i = 0; i < n; i++)
+            if (b & (1 << i))
+                subset.pb(i);
+        // process subset
+    }
+}
+// Backtracking: include/exclude recursion, generates all 2^n subsets
+void subsetsBacktrack(int i, int n, vi &cur, vector<vi> &all)
+{
+    if (i == n)
+    {
+        all.pb(cur);
+        return;
+    }
+    subsetsBacktrack(i + 1, n, cur, all); // exclude element i
+    cur.pb(i);                            // include element i
+    subsetsBacktrack(i + 1, n, cur, all);
+    cur.pop_back(); // backtrack
+}
+
 // --- Fenwick Tree (BIT) ---
 struct Fenwick
 {
@@ -432,18 +459,64 @@ void _print(T t, V... v)
         cerr << ", ";
     _print(v...);
 }
+void ssearch(vll &h, ll &ans)
+{
+    if (h.size() == 1)
+    {
+        if (h[0] <= 24)
+            ans = max(ans, h[0]);
+        return;
+    }
+    f(i, 0, h.size())
+    {
+        f(j, 0, h.size())
+        {
+            if (i == j)
+                continue;
+            vll hn;
+            f(k, 0, h.size())
+            {
+                if (k == i || k == j)
+                    continue;
+                hn.pb(h[k]);
+            }
+            ll cnt = h[i] + h[j];
+            hn.pb(cnt);
+            ssearch(hn, ans);
+            hn.pop_back();
 
+            cnt = h[i] - h[j];
+            hn.pb(cnt);
+            ssearch(hn, ans);
+            hn.pop_back();
+
+            cnt = h[i] * h[j];
+            hn.pb(cnt);
+            ssearch(hn, ans);
+            hn.pop_back();
+
+            if (h[j] != 0 && h[i] % h[j] == 0)
+            {
+                cnt = h[i] / h[j];
+                hn.pb(cnt);
+                ssearch(hn, ans);
+                hn.pop_back();
+            }
+        }
+    }
+}
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll a;
+    vll h;
+    f(i, 0, 4)
     {
-        cin >> num[i];
+        cin >> a;
+        h.pb(a);
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    ll ans = 0;
+    ssearch(h, ans);
+    cout << ans << '\n';
 }
 
 int main()
@@ -454,6 +527,7 @@ int main()
     // precompute_fib();
     // setIO("problemname");
     int t = 1;
+    cin >> t;
     while (t--)
     {
         solve();

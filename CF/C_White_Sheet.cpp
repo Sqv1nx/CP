@@ -433,17 +433,66 @@ void _print(T t, V... v)
     _print(v...);
 }
 
+struct rec
+{
+    ll lx, ly, ux, uy;
+};
+pll checkin(rec &a, ll x, ll y)
+{
+    if (x < a.lx && y < a.ly)
+        return {a.lx, a.ly};
+    if (x < a.lx && y <= a.uy)
+        return {a.lx, y};
+    if (x < a.lx && y > a.uy)
+        return {a.lx, a.uy};
+
+    if (x <= a.ux && y < a.ly)
+        return {x, a.ly};
+    if (x <= a.ux && y <= a.uy)
+        return {x, y};
+    if (x <= a.ux && y > a.uy)
+        return {x, a.uy};
+
+    if (x > a.ux && y < a.ly)
+        return {a.ux, a.ly};
+    if (x > a.ux && y <= a.uy)
+        return {a.ux, y};
+    if (x > a.ux && y > a.uy)
+        return {a.ux, a.uy};
+}
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll a, b, c, d;
+    vector<rec> board(3);
+    f(i, 0, 3)
     {
-        cin >> num[i];
+        cin >> a >> b >> c >> d;
+        board[i] = {a, b, c, d};
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    ll ans = 0;
+    auto [x, y, z, w] = board[0];
+    ll area = (z - x) * (w - y);
+    tie(a, b) = checkin(board[1], x, y);
+    tie(c, d) = checkin(board[1], z, w);
+    ll u = (c - a) * (d - b);
+    ans += u;
+    auto [p, q] = checkin(board[2], x, y);
+    auto [r, s] = checkin(board[2], z, w);
+    u = (r - p) * (s - q);
+    ans += u;
+    board.pb({a, b, c, d});
+    auto [e, f] = checkin(board[3], p, q);
+    auto [g, h] = checkin(board[3], r, s);
+    u = (g - e) * (h - f);
+    ans -= u;
+    if (ans >= area)
+    {
+        cout << "NO" << '\n';
+    }
+    else
+    {
+        cout << "YES" << '\n';
+    }
 }
 
 int main()

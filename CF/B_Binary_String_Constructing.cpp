@@ -253,6 +253,33 @@ vector<T> compress(vector<T> &a)
 template <typename T>
 T decompress(int rank, const vector<T> &vals) { return vals[rank - 1]; }
 
+// --- Subsets (Bitmask + Backtracking) ---
+// Bitmask: iterate all 2^n subsets via bit i of mask => include element i
+void allSubsetsBitmask(int n)
+{
+    for (int b = 0; b < (1 << n); b++)
+    {
+        vi subset;
+        for (int i = 0; i < n; i++)
+            if (b & (1 << i))
+                subset.pb(i);
+        // process subset
+    }
+}
+// Backtracking: include/exclude recursion, generates all 2^n subsets
+void subsetsBacktrack(int i, int n, vi &cur, vector<vi> &all)
+{
+    if (i == n)
+    {
+        all.pb(cur);
+        return;
+    }
+    subsetsBacktrack(i + 1, n, cur, all); // exclude element i
+    cur.pb(i);                            // include element i
+    subsetsBacktrack(i + 1, n, cur, all);
+    cur.pop_back(); // backtrack
+}
+
 // --- Fenwick Tree (BIT) ---
 struct Fenwick
 {
@@ -435,15 +462,60 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll a, b, x;
+    cin >> a >> b >> x;
+    str s = "";
+    str q = "";
+    if (x % 2 == 1)
     {
-        cin >> num[i];
+        f(i, 0, (x + 1) / 2)
+        {
+            q += "01";
+            a--;
+            b--;
+        }
+        f(i, 0, a)
+        {
+            s += '0';
+        }
+        s += q;
+        f(i, 0, b)
+        {
+            s += '1';
+        }
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    else
+    {
+        f(i, 0, (x + 1) / 2)
+        {
+            q += "01";
+            a--;
+            b--;
+        }
+        if (a == 0)
+        {
+            s += '1';
+            s += q;
+            f(i, 0, b-1)
+            {
+                s += '1';
+            }
+        }
+        else
+        {
+            f(i, 0, a-1)
+            {
+                s += '0';
+            }
+            s += q;
+            f(i, 0, b)
+            {
+                s += '1';
+            }
+            s+='0';
+        }
+    }
+    cout << s << '\n';
 }
 
 int main()

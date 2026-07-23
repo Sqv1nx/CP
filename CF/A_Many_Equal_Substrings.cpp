@@ -435,15 +435,25 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n, k;
+    str t;
+    cin >> n >> k;
+    cin >> t;
+    ll c = 0;
+    str s;
+    f(i, 0, n)
     {
-        cin >> num[i];
+        str p = t.substr(0, i + 1);
+        str q = t.substr(n - i - 1, i + 1);
+        cout << p << ' ' << q << '\n';
+        if (p == q && p.size() < n)
+            c = p.size();
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    s = t.substr(0, c);
+    str p = t.substr(c, n - c);
+    f(i, 0, k)
+        s += p;
+    cout << s << '\n';
 }
 
 int main()

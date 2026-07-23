@@ -253,6 +253,33 @@ vector<T> compress(vector<T> &a)
 template <typename T>
 T decompress(int rank, const vector<T> &vals) { return vals[rank - 1]; }
 
+// --- Subsets (Bitmask + Backtracking) ---
+// Bitmask: iterate all 2^n subsets via bit i of mask => include element i
+void allSubsetsBitmask(int n)
+{
+    for (int b = 0; b < (1 << n); b++)
+    {
+        vi subset;
+        for (int i = 0; i < n; i++)
+            if (b & (1 << i))
+                subset.pb(i);
+        // process subset
+    }
+}
+// Backtracking: include/exclude recursion, generates all 2^n subsets
+void subsetsBacktrack(int i, int n, vi &cur, vector<vi> &all)
+{
+    if (i == n)
+    {
+        all.pb(cur);
+        return;
+    }
+    subsetsBacktrack(i + 1, n, cur, all); // exclude element i
+    cur.pb(i);                            // include element i
+    subsetsBacktrack(i + 1, n, cur, all);
+    cur.pop_back(); // backtrack
+}
+
 // --- Fenwick Tree (BIT) ---
 struct Fenwick
 {
@@ -432,18 +459,70 @@ void _print(T t, V... v)
         cerr << ", ";
     _print(v...);
 }
-
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n, k;
+    cin >> n >> k;
+    struct cow
     {
-        cin >> num[i];
+        ll s;
+        ll t;
+        ll c;
+    };
+    vector<cow> barn(n);
+    f(i, 0, n)
+    {
+        cin >> barn[i].s >> barn[i].t >> barn[i].c;
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    struct ac
+    {
+        ll s;
+        ll t;
+        ll c;
+        ll co;
+    };
+    vector<ac> elec(k);
+    f(i, 0, k)
+    {
+        cin >> elec[i].s >> elec[i].t >> elec[i].c >> elec[i].co;
+    }
+    ll mx = 1 << k;
+    ll ans = INF;
+    f(i, 0, mx)
+    {
+        vll temps(101, 0);
+        ll tmp = 0;
+        bool sat = true;
+        f(j, 0, k)
+        {
+            if (i & (1 << j))
+            {
+                tmp += elec[j].co;
+                f(q, elec[j].s, elec[j].t + 1)
+                {
+                    temps[q] += elec[j].c;
+                }
+            }
+        }
+
+        for (auto [a, b, c] : barn)
+        {
+            f(q, a, b + 1)
+            {
+                if (temps[q] < c)
+                {
+                    sat = false;
+                    break;
+                }
+            }
+        }
+        if (sat)
+        {
+            //debug(temps);
+            ans = min(ans, tmp);
+        }
+    }
+    cout << ans << '\n';
 }
 
 int main()

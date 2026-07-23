@@ -435,15 +435,60 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n, a, b;
+    cin >> n >> a >> b;
+    str s;
+    cin >> s;
+    ll cnt = 0;
+    f(i, 0, n)
     {
-        cin >> num[i];
+        ll ca = 0, cb = 0;
+        if (s[i] == '.')
+        {
+            if (i > 0)
+            {
+                if (s[i - 1] == 'A')
+                    ca++;
+                if (s[i - 1] == 'B')
+                    cb++;
+            }
+            if (i < n - 1)
+            {
+                if (s[i + 1] == 'A')
+                    ca++;
+                if (s[i + 1] == 'B')
+                    cb++;
+            }
+            if (ca == 0 && cb == 0 && (a != 0 || b != 0))
+            {
+                if (a > b)
+                {
+                    cnt++;
+                    s[i] = 'A';
+                    a--;
+                }
+                else
+                {
+                    cnt++;
+                    s[i] = 'B';
+                    b--;
+                }
+            }
+            else if (ca == 0 && a > 0)
+            {
+                cnt++;
+                s[i] = 'A';
+                a--;
+            }
+            else if (cb == 0 && b > 0)
+            {
+                cnt++;
+                s[i] = 'B';
+                b--;
+            }
+        }
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    cout << cnt << '\n';
 }
 
 int main()

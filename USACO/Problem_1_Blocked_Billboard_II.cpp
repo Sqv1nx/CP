@@ -433,26 +433,68 @@ void _print(T t, V... v)
     _print(v...);
 }
 
+struct rec
+{
+    ll lx, ly, ux, uy;
+};
+pll checkin(rec &a, ll x, ll y)
+{
+    if (x < a.lx && y < a.ly)
+        return {a.lx, a.ly};
+    if (x < a.lx && y <= a.uy)
+        return {a.lx, y};
+    if (x < a.lx && y > a.uy)
+        return {a.lx, a.uy};
+
+    if (x <= a.ux && y < a.ly)
+        return {x, a.ly};
+    if (x <= a.ux && y <= a.uy)
+        return {x, y};
+    if (x <= a.ux && y > a.uy)
+        return {x, a.uy};
+
+    if (x > a.ux && y < a.ly)
+        return {a.ux, a.ly};
+    if (x > a.ux && y <= a.uy)
+        return {a.ux, y};
+    if (x > a.ux && y > a.uy)
+        return {a.ux, a.uy};
+}
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll a, b, c, d;
+    rec re;
+    cin >> a >> b >> c >> d;
+    re = {a, b, c, d};
+    ll ans = (c - a) * (d - b);
+    ll p, q, r, s;
+    cin >> p >> q >> r >> s;
+    auto [x, y] = checkin(re, p, q);
+    auto [z, w] = checkin(re, r, s);
+    if (x == a && y == b && (z == c || d == w))
     {
-        cin >> num[i];
+        c = z;
+        d = w;
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    else if (z == c && d == w && (a == x || b == y))
+    {
+        a = x;
+        b = y;
+    }
+    else
+    {
+        c = a;
+    }
+    ans -= (c - a) * (d - b);
+    cout << ans << '\n';
 }
-
 int main()
 {
     fast_io;
     // sieve();
     // precompute_factorials();
     // precompute_fib();
-    // setIO("problemname");
+    setIO("billboard");
     int t = 1;
     while (t--)
     {

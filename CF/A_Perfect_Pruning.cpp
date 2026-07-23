@@ -253,6 +253,33 @@ vector<T> compress(vector<T> &a)
 template <typename T>
 T decompress(int rank, const vector<T> &vals) { return vals[rank - 1]; }
 
+// --- Subsets (Bitmask + Backtracking) ---
+// Bitmask: iterate all 2^n subsets via bit i of mask => include element i
+void allSubsetsBitmask(int n)
+{
+    for (int b = 0; b < (1 << n); b++)
+    {
+        vi subset;
+        for (int i = 0; i < n; i++)
+            if (b & (1 << i))
+                subset.pb(i);
+        // process subset
+    }
+}
+// Backtracking: include/exclude recursion, generates all 2^n subsets
+void subsetsBacktrack(int i, int n, vi &cur, vector<vi> &all)
+{
+    if (i == n)
+    {
+        all.pb(cur);
+        return;
+    }
+    subsetsBacktrack(i + 1, n, cur, all); // exclude element i
+    cur.pb(i);                            // include element i
+    subsetsBacktrack(i + 1, n, cur, all);
+    cur.pop_back(); // backtrack
+}
+
 // --- Fenwick Tree (BIT) ---
 struct Fenwick
 {
@@ -435,15 +462,26 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n;
+    cin >> n;
+    vll plant(n);
+    f(i, 0, n)
     {
-        cin >> num[i];
+        cin >> plant[i];
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    ll mx = 0;
+    f(i, 0, n)
+    {
+        if (i > 0 && plant[i - 1] == plant[i])
+        {
+            mx = max(plant[i], mx);
+        }
+        if (i < n - 1 && plant[i + 1] == plant[i])
+        {
+            mx = max(plant[i], mx);
+        }
+    }
+    cout << mx << '\n';
 }
 
 int main()
@@ -454,6 +492,7 @@ int main()
     // precompute_fib();
     // setIO("problemname");
     int t = 1;
+    cin >> t;
     while (t--)
     {
         solve();

@@ -253,6 +253,33 @@ vector<T> compress(vector<T> &a)
 template <typename T>
 T decompress(int rank, const vector<T> &vals) { return vals[rank - 1]; }
 
+// --- Subsets (Bitmask + Backtracking) ---
+// Bitmask: iterate all 2^n subsets via bit i of mask => include element i
+void allSubsetsBitmask(int n)
+{
+    for (int b = 0; b < (1 << n); b++)
+    {
+        vi subset;
+        for (int i = 0; i < n; i++)
+            if (b & (1 << i))
+                subset.pb(i);
+        // process subset
+    }
+}
+// Backtracking: include/exclude recursion, generates all 2^n subsets
+void subsetsBacktrack(int i, int n, vi &cur, vector<vi> &all)
+{
+    if (i == n)
+    {
+        all.pb(cur);
+        return;
+    }
+    subsetsBacktrack(i + 1, n, cur, all); // exclude element i
+    cur.pb(i);                            // include element i
+    subsetsBacktrack(i + 1, n, cur, all);
+    cur.pop_back(); // backtrack
+}
+
 // --- Fenwick Tree (BIT) ---
 struct Fenwick
 {
@@ -432,18 +459,70 @@ void _print(T t, V... v)
         cerr << ", ";
     _print(v...);
 }
-
+void ssearch(set<ll> &diff, ll cnt, ll ttl, map<ll, ll> &b1, map<ll, ll> &b2, ll buc)
+{
+    if (cnt == 4)
+    {
+        diff.insert(ttl);
+        return;
+    }
+    else
+    {
+        if (cnt % 2 == 0)
+        {
+            b1[buc]--;
+            b2[buc]++;
+            for (auto [a, b] : b2)
+            {
+                if (b > 0)
+                {
+                    ssearch(diff, cnt + 1, ttl - buc, b1, b2, a);
+                }
+            }
+            b2[buc]--;
+            b1[buc]++;
+        }
+        else
+        {
+            b2[buc]--;
+            b1[buc]++;
+            for (auto [a, b] : b1)
+            {
+                if (b > 0)
+                {
+                    ssearch(diff, cnt + 1, ttl + buc, b1, b2, a);
+                }
+            }
+            b1[buc]--;
+            b2[buc]++;
+        }
+    }
+}
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    map<ll, ll> b1, b2;
+    f(i, 0, 10)
     {
-        cin >> num[i];
+        ll x;
+        cin >> x;
+        b1[x]++;
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    f(i, 0, 10)
+    {
+        ll y;
+        cin >> y;
+        b2[y]++;
+    }
+    ll cnt = 0, ttl = 1000;
+    set<ll> diff;
+    for (auto [a, b] : b1)
+    {
+        if (b > 0)
+        {
+            ssearch(diff, cnt, ttl, b1, b2, a);
+        }
+    }
+    cout << diff.size() << '\n';
 }
 
 int main()
@@ -452,7 +531,7 @@ int main()
     // sieve();
     // precompute_factorials();
     // precompute_fib();
-    // setIO("problemname");
+    setIO("backforth");
     int t = 1;
     while (t--)
     {

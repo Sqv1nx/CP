@@ -435,15 +435,42 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n, c0, c1, h;
+    cin >> n >> c0 >> c1 >> h;
+    str s;
+    cin >> s;
+    ll cnt = 0, cnth = 0;
+    f(i, 0, n)
     {
-        cin >> num[i];
+        if (s[i] == '0')
+            cnt++;
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    ll cost = cnt * c0 + (n - cnt) * c1 + cnth * h;
+    f(i, 0, n)
+    {
+        ll tmp;
+        if (s[i] == '0')
+        {
+            tmp = (cnt - 1) * c0 + (cnth + 1) * h + (n + 1 - cnt) * c1;
+            if (tmp < cost)
+            {
+                cost = tmp;
+                cnt--;
+                cnth++;
+            }
+        }
+        else
+        {
+            tmp = (cnt + 1) * c0 + (cnth + 1) * h + (n - 1 - cnt) * c1;
+            if (tmp < cost)
+            {
+                cost = tmp;
+                cnt++;
+                cnth++;
+            }
+        }
+    }
+    cout << cost << '\n';
 }
 
 int main()
@@ -454,6 +481,7 @@ int main()
     // precompute_fib();
     // setIO("problemname");
     int t = 1;
+    cin >> t;
     while (t--)
     {
         solve();

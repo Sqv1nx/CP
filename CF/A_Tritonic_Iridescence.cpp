@@ -435,15 +435,102 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n;
+    cin >> n;
+    str s;
+    cin >> s;
+    bool adj = false;
+    ll count = 0;
+    f(i, 0, n)
     {
-        cin >> num[i];
+        ll c = 0, y = 0, m = 0;
+        ll cnt = 0;
+        if (i < n - 1)
+        {
+            if (s[i] == 'C' && s[i + 1] == 'C')
+            {
+                adj = true;
+            }
+            else if (s[i] == 'Y' && s[i + 1] == 'Y')
+            {
+                adj = true;
+            }
+            else if (s[i] == 'M' && s[i + 1] == 'M')
+            {
+                adj = true;
+            }
+            else if (s[i] == '?')
+            {
+                if (i > 0)
+                {
+                    if (s[i - 1] == 'C')
+                        c++;
+                    if (s[i - 1] == 'M')
+                        m++;
+                    if (s[i - 1] == 'Y')
+                        y++;
+                }
+                if (s[i + 1] == 'C')
+                    c++;
+                if (s[i + 1] == 'M')
+                    m++;
+                if (s[i + 1] == 'Y')
+                    y++;
+
+                if (c == 0)
+                {
+                    s[i] = 'C';
+                    cnt++;
+                }
+                if (y == 0)
+                {
+                    s[i] = 'Y';
+                    cnt++;
+                }
+                if (m == 0)
+                {
+                    s[i] = 'M';
+                    cnt++;
+                }
+            }
+        }
+        else
+        {
+            if (s[i] == '?')
+            {
+                if (s[i - 1] == 'C')
+                    c++;
+                if (s[i - 1] == 'M')
+                    m++;
+                if (s[i - 1] == 'Y')
+                    y++;
+
+                if (c == 0)
+                {
+                    s[i] = 'C';
+                    cnt++;
+                }
+                if (y == 0)
+                {
+                    s[i] = 'Y';
+                    cnt++;
+                }
+                if (m == 0)
+                {
+                    s[i] = 'M';
+                    cnt++;
+                }
+            }
+        }
+        if (cnt >= 2)
+            count++;
+        if (adj)
+            break;
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    if (!adj && count != 0)
+        cout << "Yes" << '\n';
+    else
+        cout << "No" << '\n';
 }
 
 int main()

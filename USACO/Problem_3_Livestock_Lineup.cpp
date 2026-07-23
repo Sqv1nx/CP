@@ -253,6 +253,33 @@ vector<T> compress(vector<T> &a)
 template <typename T>
 T decompress(int rank, const vector<T> &vals) { return vals[rank - 1]; }
 
+// --- Subsets (Bitmask + Backtracking) ---
+// Bitmask: iterate all 2^n subsets via bit i of mask => include element i
+void allSubsetsBitmask(int n)
+{
+    for (int b = 0; b < (1 << n); b++)
+    {
+        vi subset;
+        for (int i = 0; i < n; i++)
+            if (b & (1 << i))
+                subset.pb(i);
+        // process subset
+    }
+}
+// Backtracking: include/exclude recursion, generates all 2^n subsets
+void subsetsBacktrack(int i, int n, vi &cur, vector<vi> &all)
+{
+    if (i == n)
+    {
+        all.pb(cur);
+        return;
+    }
+    subsetsBacktrack(i + 1, n, cur, all); // exclude element i
+    cur.pb(i);                            // include element i
+    subsetsBacktrack(i + 1, n, cur, all);
+    cur.pop_back(); // backtrack
+}
+
 // --- Fenwick Tree (BIT) ---
 struct Fenwick
 {
@@ -435,15 +462,55 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    unordered_map<ll, str> name;
+    name[1] = "Beatrice";
+    name[2] = "Belinda";
+    name[3] = "Bella";
+    name[4] = "Bessie";
+    name[5] = "Betsy";
+    name[6] = "Blue";
+    name[7] = "Buttercup";
+    name[8] = "Sue";
+    unordered_map<str, ll> num;
+    num["Beatrice"] = 1;
+    num["Belinda"] = 2;
+    num["Bella"] = 3;
+    num["Bessie"] = 4;
+    num["Betsy"] = 5;
+    num["Blue"] = 6;
+    num["Buttercup"] = 7;
+    num["Sue"] = 8;
+    ll n;
+    cin >> n;
+    vpll c;
+    f(i, 0, n)
     {
-        cin >> num[i];
+        str a, b;
+        cin >> a;
+        cin >> b >> b >> b >> b >> b;
+        c.pb({num[a], num[b]});
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    str s = "12345678";
+    do
+    {
+        ll cnt = 0;
+        for (auto [a, b] : c)
+        {
+            f(i, 0, 7)
+            {
+                if (s[i] == '0' + a && s[i + 1] == '0' + b)
+                    cnt++;
+                else if (s[i] == '0' + b && s[i + 1] == '0' + a)
+                    cnt++;
+            }
+        }
+        if (cnt == n)
+            break;
+    } while (next_permutation(all(s)));
+    for (auto x : s)
+    {
+        cout << name[x - '0'] << '\n';
+    }
 }
 
 int main()
@@ -452,7 +519,7 @@ int main()
     // sieve();
     // precompute_factorials();
     // precompute_fib();
-    // setIO("problemname");
+    setIO("lineup");
     int t = 1;
     while (t--)
     {

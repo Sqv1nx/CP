@@ -253,6 +253,33 @@ vector<T> compress(vector<T> &a)
 template <typename T>
 T decompress(int rank, const vector<T> &vals) { return vals[rank - 1]; }
 
+// --- Subsets (Bitmask + Backtracking) ---
+// Bitmask: iterate all 2^n subsets via bit i of mask => include element i
+void allSubsetsBitmask(int n)
+{
+    for (int b = 0; b < (1 << n); b++)
+    {
+        vi subset;
+        for (int i = 0; i < n; i++)
+            if (b & (1 << i))
+                subset.pb(i);
+        // process subset
+    }
+}
+// Backtracking: include/exclude recursion, generates all 2^n subsets
+void subsetsBacktrack(int i, int n, vi &cur, vector<vi> &all)
+{
+    if (i == n)
+    {
+        all.pb(cur);
+        return;
+    }
+    subsetsBacktrack(i + 1, n, cur, all); // exclude element i
+    cur.pb(i);                            // include element i
+    subsetsBacktrack(i + 1, n, cur, all);
+    cur.pop_back(); // backtrack
+}
+
 // --- Fenwick Tree (BIT) ---
 struct Fenwick
 {
@@ -435,15 +462,71 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n, m, q;
+    cin >> n >> m >> q;
+    set<ll> s;
+    f(i, 0, n)
     {
-        cin >> num[i];
+        ll x;
+        cin >> x;
+        s.insert(x);
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    vll conse(n, INF);
+    ll tmp = 0;
+    ll prev = 0;
+    ll mn = 0;
+    for (auto x : s)
+    {
+        if (prev + 1 == x)
+        {
+            prev++;
+            tmp++;
+        }
+        else
+        {
+            tmp = 1;
+            prev = x;
+            mn = x;
+        }
+        conse[tmp - 1] = min(mn, conse[tmp - 1]);
+    }
+    set<ll> con;
+    f(i, 0, n)
+    {
+        if (conse[i] != INF)
+            con.insert(i + 1);
+    }
+    debug(conse);
+    debug(con);
+    f(i, 0, q)
+    {
+        ll k;
+        ll y = m;
+        cin >> k;
+        if (k <= n)
+        {
+            auto it = con.upper_bound(k);
+            if (it != con.end())
+            {
+                it--;
+                if (*it != k)
+                    it++;
+                ll p = *it;
+                y = max((ll)0,conse[p - 1] - 1);
+            }
+            else
+            {
+                it--;
+                if (*it == k)
+                {
+                    ll p = *it;
+                    y = max((ll)0,conse[p - 1] - 1);
+                }
+            }
+        }
+        cout << y << ' ';
+    }
+    cout << '\n';
 }
 
 int main()
@@ -454,6 +537,7 @@ int main()
     // precompute_fib();
     // setIO("problemname");
     int t = 1;
+    cin >> t;
     while (t--)
     {
         solve();

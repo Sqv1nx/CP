@@ -253,6 +253,33 @@ vector<T> compress(vector<T> &a)
 template <typename T>
 T decompress(int rank, const vector<T> &vals) { return vals[rank - 1]; }
 
+// --- Subsets (Bitmask + Backtracking) ---
+// Bitmask: iterate all 2^n subsets via bit i of mask => include element i
+void allSubsetsBitmask(int n)
+{
+    for (int b = 0; b < (1 << n); b++)
+    {
+        vi subset;
+        for (int i = 0; i < n; i++)
+            if (b & (1 << i))
+                subset.pb(i);
+        // process subset
+    }
+}
+// Backtracking: include/exclude recursion, generates all 2^n subsets
+void subsetsBacktrack(int i, int n, vi &cur, vector<vi> &all)
+{
+    if (i == n)
+    {
+        all.pb(cur);
+        return;
+    }
+    subsetsBacktrack(i + 1, n, cur, all); // exclude element i
+    cur.pb(i);                            // include element i
+    subsetsBacktrack(i + 1, n, cur, all);
+    cur.pop_back(); // backtrack
+}
+
 // --- Fenwick Tree (BIT) ---
 struct Fenwick
 {
@@ -432,18 +459,39 @@ void _print(T t, V... v)
         cerr << ", ";
     _print(v...);
 }
-
+void search(ll y, vll &col, vll &diag1, vll &diag2, ll &cnt, vector<str> &board)
+{
+    if (y == 8)
+    {
+        cnt++;
+        return;
+    }
+    f(x, 0, 8)
+    {
+        if (col[x] || diag1[x + y] || diag2[x - y + 7] || board[y][x] == '*')
+            continue;
+        col[x] = 1;
+        diag1[x + y] = 1;
+        diag2[x - y + 7] = 1;
+        search(y + 1, col, diag1, diag2, cnt, board);
+        col[x] = 0;
+        diag1[x + y] = 0;
+        diag2[x - y + 7] = 0;
+    }
+}
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    vector<str> board(8);
+    f(i, 0, 8)
     {
-        cin >> num[i];
+        cin >> board[i];
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    vll col(8, 0);
+    vll diag1(15, 0);
+    vll diag2(15, 0);
+    ll cnt = 0;
+    search(0, col, diag1, diag2, cnt, board);
+    cout << cnt << '\n';
 }
 
 int main()

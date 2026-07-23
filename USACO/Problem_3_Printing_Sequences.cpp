@@ -253,6 +253,33 @@ vector<T> compress(vector<T> &a)
 template <typename T>
 T decompress(int rank, const vector<T> &vals) { return vals[rank - 1]; }
 
+// --- Subsets (Bitmask + Backtracking) ---
+// Bitmask: iterate all 2^n subsets via bit i of mask => include element i
+void allSubsetsBitmask(int n)
+{
+    for (int b = 0; b < (1 << n); b++)
+    {
+        vi subset;
+        for (int i = 0; i < n; i++)
+            if (b & (1 << i))
+                subset.pb(i);
+        // process subset
+    }
+}
+// Backtracking: include/exclude recursion, generates all 2^n subsets
+void subsetsBacktrack(int i, int n, vi &cur, vector<vi> &all)
+{
+    if (i == n)
+    {
+        all.pb(cur);
+        return;
+    }
+    subsetsBacktrack(i + 1, n, cur, all); // exclude element i
+    cur.pb(i);                            // include element i
+    subsetsBacktrack(i + 1, n, cur, all);
+    cur.pop_back(); // backtrack
+}
+
 // --- Fenwick Tree (BIT) ---
 struct Fenwick
 {
@@ -433,19 +460,137 @@ void _print(T t, V... v)
     _print(v...);
 }
 
+bool verify(ll k, vll &a, vll &b)
+{
+    vll m(k, -1);
+    f(i, 0, a.size())
+    {
+        if (m[b[i]] == -1)
+            m[b[i]] = a[i];
+        else if (m[b[i]] != a[i])
+            return false;
+    }
+    return true;
+}
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n, k;
+    cin >> n >> k;
+    vll a(n);
+    f(i, 0, n)
     {
-        cin >> num[i];
+        cin >> a[i];
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    if (k == 1)
+    {
+        cout << "YES" << '\n';
+    }
+    if (k == 2)
+    {
+        bool dn = false;
+        vll b(n);
+        f(x, 1, n+1)
+        {
+            if (n % x == 0)
+            {
+                f(y, 0, n / x)
+                {
+                    f(j, 0, x)
+                    {
+                        f(i, 0, y)
+                        {
+                            b[j * n / x + i] = 0;
+                        }
+                        f(i, y, n / x)
+                        {
+                            b[j * n / x + i] = 1;
+                        }
+                    }
+                    // debug(b);
+                    dn = verify(k, a, b);
+                    if (dn)
+                        break;
+                }
+            }
+            if (dn)
+                break;
+        }
+        if (dn||n<k)
+        {
+            cout << "YES\n";
+        }
+        else
+        {
+            cout << "NO\n";
+        }
+    }
+    if (k == 3)
+    {
+        bool dn = false;
+        vll b(n);
+        f(x, 1, n+1)
+        {
+            if (n % x == 0)
+            {
+                f(y, 0, n / x)
+                {
+                    f(aa, 1, y)
+                    {
+                        if (y % aa == 0)
+                        {
+                            f(ab, 0, y / aa)
+                            {
+                                f(i, 0, x)
+                                {
+                                    f(j, 0, aa)
+                                    {
+                                        f(p, 0, ab)
+                                        {
+                                            b[i * n / x + j * y / aa + p] = 0;
+                                        }
+                                        f(p, ab, y / aa)
+                                        {
+                                            b[i * n / x + j * y / aa + p] = 1;
+                                        }
+                                    }
+                                    f(q, y, n / x)
+                                    {
+                                        b[i * n / x + q] = 2;
+                                    }
+                                }
+                                // debug(b);
+                                dn = verify(k, a, b);
+                                if (!dn)
+                                {
+                                    reverse(all(a));
+                                    dn = verify(k, a, b);
+                                    if (!dn)
+                                        reverse(all(a));
+                                }
+                                if (dn)
+                                    break;
+                            }
+                        }
+                        if (dn)
+                            break;
+                    }
+                    if (dn)
+                        break;
+                }
+            }
+            if (dn)
+                break;
+        }
+        if (dn||n<k)
+        {
+            cout << "YES\n";
+        }
+        else
+        {
+            cout << "NO\n";
+        }
+    }
 }
-
 int main()
 {
     fast_io;
@@ -454,6 +599,7 @@ int main()
     // precompute_fib();
     // setIO("problemname");
     int t = 1;
+    cin >> t;
     while (t--)
     {
         solve();

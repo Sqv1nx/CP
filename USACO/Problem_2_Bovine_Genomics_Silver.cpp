@@ -189,7 +189,12 @@ void _print(T t, V... v)
         cerr << ", ";
     _print(v...);
 }
-
+ll code(char c) {
+    if (c == 'A') return 0;
+    if (c == 'C') return 1;
+    if (c == 'G') return 2;
+    return 3;
+}
 void solve()
 {
     ll n, k;
@@ -206,23 +211,15 @@ void solve()
         {
             f(p, j + 1, k)
             {
-                set<str> s;
+                vll seen(64,0);
                 bool dj = true;
                 f(a, 0, n)
                 {
-                    str q = "";
-                    q += gene[a][i];
-                    q += gene[a][j];
-                    q += gene[a][p];
-                    s.insert(q);
+                    seen[code(gene[a][i]) * 16 + code(gene[a][j]) * 4 + code(gene[a][p])]=1;
                 }
                 f(a, n, 2 * n)
                 {
-                    str q = "";
-                    q += gene[a][i];
-                    q += gene[a][j];
-                    q += gene[a][p];
-                    if (s.find(q) != s.end())
+                    if (seen[code(gene[a][i]) * 16 + code(gene[a][j]) * 4 + code(gene[a][p])]==1)
                     {
                         dj = false;
                     }

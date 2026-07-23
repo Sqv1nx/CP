@@ -435,15 +435,31 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n, m, q;
+    cin >> n >> m >> q;
+    str s, t;
+    cin >> s >> t;
+    set<pll> freq;
+    f(i, m - 1, n)
     {
-        cin >> num[i];
+        str a = s.substr(i + 1 - m, m);
+        if (a == t)
+            freq.insert({i+1-m,i});
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    f(i, 0, q)
+    {
+        ll cnt = 0;
+        ll a, b;
+        cin >> a >> b;
+        a--;
+        b--;
+        for (auto [x,y] : freq)
+        {
+            if (x >= a && y <= b)
+                cnt++;
+        }
+        cout << cnt << '\n';
+    }
 }
 
 int main()

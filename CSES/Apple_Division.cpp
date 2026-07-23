@@ -432,18 +432,38 @@ void _print(T t, V... v)
         cerr << ", ";
     _print(v...);
 }
+// subsetbitmask
+// for (int b = 0; b < (1<<n); b++) {
+// vector<int> subset;
+// for (int i = 0; i < n; i++) {
+// if (b&(1<<i)) subset.push_back(i);
+// }
+// }
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n;
+    cin >> n;
+    vll num(n);
+    ll sum = 0;
+    f(i, 0, n)
     {
         cin >> num[i];
+        sum += num[i];
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    ll mx = 1 << n;
+    ll ans = INF;
+    f(i, 0, mx)
+    {
+        ll temp = 0;
+        f(j, 0, n)
+        {
+            if (i & (1 << j))
+                temp += num[j];
+        }
+        ans = min(ans, abs(sum - temp * 2));
+    }
+    cout << ans << '\n';
 }
 
 int main()

@@ -435,15 +435,39 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll W, H;
+    ll p, q, r, s;
+    cin >> W >> H;
+    cin >> p >> q >> r >> s;
+    ll w, h;
+    cin >> w >> h;
+    ll a, b;
+    a = W - (r - p);
+    b = H - (s - q);
+    debug(a);
+    debug(b);
+    ll ans = INF;
+    if (w <= a)
     {
-        cin >> num[i];
+        ll tmp = max((ll)0, w - p);
+        ll t = max((ll)0, w - (W - r));
+        ans = min({ans, tmp, t});
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    if (h <= b)
+    {
+        ll tmp = max((ll)0, h - q);
+        ll t = max((ll)0, h - (H - s));
+        ans = min({ans, tmp, t});
+    }
+    if (ans == INF)
+    {
+        cout << -1 << '\n';
+    }
+    else
+    {
+        double x = 1.0 * ans;
+        cout << fixed << setprecision(10) << x << '\n';
+    }
 }
 
 int main()
@@ -454,6 +478,7 @@ int main()
     // precompute_fib();
     // setIO("problemname");
     int t = 1;
+    cin >> t;
     while (t--)
     {
         solve();

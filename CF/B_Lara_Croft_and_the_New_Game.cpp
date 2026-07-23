@@ -253,6 +253,33 @@ vector<T> compress(vector<T> &a)
 template <typename T>
 T decompress(int rank, const vector<T> &vals) { return vals[rank - 1]; }
 
+// --- Subsets (Bitmask + Backtracking) ---
+// Bitmask: iterate all 2^n subsets via bit i of mask => include element i
+void allSubsetsBitmask(int n)
+{
+    for (int b = 0; b < (1 << n); b++)
+    {
+        vi subset;
+        for (int i = 0; i < n; i++)
+            if (b & (1 << i))
+                subset.pb(i);
+        // process subset
+    }
+}
+// Backtracking: include/exclude recursion, generates all 2^n subsets
+void subsetsBacktrack(int i, int n, vi &cur, vector<vi> &all)
+{
+    if (i == n)
+    {
+        all.pb(cur);
+        return;
+    }
+    subsetsBacktrack(i + 1, n, cur, all); // exclude element i
+    cur.pb(i);                            // include element i
+    subsetsBacktrack(i + 1, n, cur, all);
+    cur.pop_back(); // backtrack
+}
+
 // --- Fenwick Tree (BIT) ---
 struct Fenwick
 {
@@ -435,15 +462,51 @@ void _print(T t, V... v)
 
 void solve()
 {
-    vll num(7);
-    f(i, 0, 7)
+    ll n, m, k;
+    cin >> n >> m >> k;
+    ll x = 1, y = 1;
+    if (k <= n - 1)
     {
-        cin >> num[i];
+        y += k;
     }
-    sort(all(num));
-    cout << num[0] << ' ';
-    cout << num[1] << ' ';
-    cout << num[6] - num[1] - num[0] << '\n';
+    else if (k + 1 - n <= m - 1)
+    {
+        y += n - 1;
+        k -= n - 1;
+        x += k;
+    }
+    else
+    {
+        y += n - 1;
+        x += m - 1;
+        k -= n + m - 2;
+        ll p = k / (m - 1);
+        if (p % 2 == 0)
+        {
+            y = n - p;
+            x = m;
+            p = k % (m - 1);
+            if (p > 0)
+            {
+                p--;
+                y--;
+            }
+            x=x-p;
+        }
+        else
+        {
+            y = n - p;
+            x = 2;
+            p = k % (m - 1);
+            if (p > 0)
+            {
+                y--;
+                p--;
+            }
+            x=x+p;
+        }
+    }
+    cout << y << ' ' << x << '\n';
 }
 
 int main()
