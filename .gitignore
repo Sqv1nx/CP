@@ -13,6 +13,7 @@
 *.swp
 *~
 *.tmp
+*.py
 
 # Common text files used for local testing
 input.txt
