@@ -15,30 +15,22 @@
    --------------------------------------------------- */
 
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-
 using namespace std;
-using namespace __gnu_pbds;
 
-// --- PBDS ---
-template <class T>
-using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-
-// --- Type Aliases ---
+// Type & Container Aliases
 using ll = long long;
-using ld = long double;
 using str = string;
 using pii = pair<int, int>;
 using pll = pair<ll, ll>;
 using vi = vector<int>;
 using vll = vector<ll>;
-using vpi = vector<pii>;
-using vpll = vector<pll>;
+using mii = map<int, int>;
+using si = set<int>;
+using msll = multiset<ll>;
 
-// --- Macros ---
-#define f(i, s, e) for (ll i = (s); i < (e); i++)
-#define rf(i, e, s) for (ll i = (e) - 1; i >= (s); i--)
+// Macros
+#define f(i, s, e) for (long long int i = s; i < e; i++)
+#define rf(i, e, s) for (long long int i = e - 1; i >= s; i--)
 #define pb push_back
 #define mp make_pair
 #define ff first
@@ -49,17 +41,16 @@ using vpll = vector<pll>;
     cin.tie(NULL);                    \
     cout.tie(NULL);
 
-// --- Constants ---
-const int N = 2e5 + 5;
-const ll MOD = 1e9 + 7;
+// Constants
+const ll MOD9 = 1e9 + 7;
 const ll MOD2 = 998244353;
 const ll INF = 1e18;
 
-// --- Math & Modular Arithmetic ---
-ll mul(ll a, ll b, ll m = MOD) { return ((a % m) * (b % m)) % m; }
-ll add(ll a, ll b, ll m = MOD) { return (a % m + b % m) % m; }
-ll sub(ll a, ll b, ll m = MOD) { return (a % m - b % m + m) % m; }
-ll expo(ll a, ll b, ll m = MOD)
+// Modular Arithmetic
+ll mul(ll a, ll b, ll m = MOD9) { return ((a % m) * (b % m)) % m; }
+ll add(ll a, ll b, ll m = MOD9) { return (a % m + b % m) % m; }
+ll sub(ll a, ll b, ll m = MOD9) { return (a % m - b % m + m) % m; }
+ll expo(ll a, ll b, ll m = MOD9)
 {
     ll res = 1;
     a %= m;
@@ -72,118 +63,69 @@ ll expo(ll a, ll b, ll m = MOD)
     }
     return res;
 }
-ll modInverse(ll n, ll m = MOD) { return expo(n, m - 2, m); }
-ll cdiv(ll a, ll b) { return a / b + ((a ^ b) > 0 && a % b); }
+ll modInverse(ll n, ll m = MOD9) { return expo(n, m - 2, m); }
 
-ll fact[N], inv_fact[N];
-void precompute_factorials(ll m = MOD)
-{
-    fact[0] = 1;
-    for (int i = 1; i < N; i++)
-        fact[i] = mul(fact[i - 1], i, m);
-    inv_fact[N - 1] = modInverse(fact[N - 1], m);
-    for (int i = N - 2; i >= 0; i--)
-        inv_fact[i] = mul(inv_fact[i + 1], i + 1, m);
-}
-ll ncr(ll n, ll r, ll m = MOD)
-{
-    if (n < r || r < 0)
-        return 0;
-    return mul(fact[n], mul(inv_fact[r], inv_fact[n - r], m), m);
-}
-
-// --- File IO ---
-void setIO(string s)
-{
-    freopen((s + ".in").c_str(), "r", stdin);
-    freopen((s + ".out").c_str(), "w", stdout);
-}
-
-// --- Debugging ---
+// Debugging
 #ifndef ONLINE_JUDGE
-#define debug(x...)               \
-    cerr << "[" << #x << "] = ["; \
-    _print(x)
+#define debug(x)       \
+    cerr << #x << " "; \
+    _print(x);         \
+    cerr << endl;
 #else
-#define debug(x...)
+#define debug(x)
 #endif
 
-void __print(ll t) { cerr << t; }
-void __print(int t) { cerr << t; }
-void __print(str t) { cerr << '"' << t << '"'; }
-void __print(char t) { cerr << "'" << t << "'"; }
-void __print(bool t) { cerr << (t ? "true" : "false"); }
-
-template <typename T, typename V>
-void __print(const pair<T, V> &p)
+void _print(ll t) { cerr << t; }
+void _print(int t) { cerr << t; }
+void _print(str t) { cerr << t; }
+template <class T, class V>
+void _print(pair<T, V> p)
 {
     cerr << "{";
-    __print(p.ff);
+    _print(p.ff);
     cerr << ",";
-    __print(p.ss);
+    _print(p.ss);
     cerr << "}";
 }
-template <typename T>
-void __print(const T &v)
+template <class T>
+void _print(vector<T> v)
 {
-    int f = 0;
-    cerr << "{";
-    for (auto &i : v)
+    cerr << "[ ";
+    for (T i : v)
     {
-        cerr << (f++ ? "," : "");
-        __print(i);
+        _print(i);
+        cerr << " ";
     }
-    cerr << "}";
-}
-void _print() { cerr << "]\n"; }
-template <typename T, typename... V>
-void _print(T t, V... v)
-{
-    __print(t);
-    if (sizeof...(v))
-        cerr << ", ";
-    _print(v...);
+    cerr << "]";
 }
 
 void solve()
 {
     ll n;
-    cin >> n;
-    vll num(n);
-    vll ans(n, 0);
-    f(i, 0, n)
+    cin>>n;
+    vll nums(n);
+    f(i,0,n)
     {
-        cin >> num[i];
+        cin>>nums[i];
     }
-    vll mina(n);
-    mina[0] = num[0];
-    f(i, 1, n)
+    vll bins(n,0);
+    ll imn=min_element(all(nums))-nums.begin();
+    ll imx=max_element(all(nums))-nums.begin();
+    ll minn=nums[imn];
+    ll maxx=nums[imx];
+    bins[imn]=1;
+    bins[imx]=1;
+    
+    f(i,0,n)
     {
-        mina[i] = min(mina[i - 1], num[i]);
+        cout<<bins[i];
     }
-    vll maxa(n);
-    maxa[n - 1] = num[n - 1];
-    rf(i, n - 1, 0)
-    {
-        maxa[i] = max(maxa[i + 1], num[i]);
-    }
-    f(i, 0, n)
-    {
-        if (num[i] == mina[i] || num[i]==maxa[i])
-            ans[i] = 1;
-    }
-    f(i, 0, n)
-    {
-        cout << ans[i];
-    }
-    cout << '\n';
+    cout<<'\n';
 }
 
 int main()
 {
     fast_io;
-    // precompute_factorials();
-    // setIO("problemname");
     int t = 1;
     cin >> t;
     while (t--)

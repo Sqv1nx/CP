@@ -1,0 +1,19 @@
+# Compiled binaries
+*.out
+*.exe
+*.o
+*.obj
+
+# Editor and IDE directories
+.vscode/
+.cph/
+.idea/
+
+# Swap and temporary files
+*.swp
+*~
+*.tmp
+
+# Common text files used for local testing
+input.txt
+output.txt

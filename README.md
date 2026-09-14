@@ -21,6 +21,19 @@ Click the badges below to visit my profiles:
 
 ---
 
+## 📊 Statistics & Rankings
+
+* **Codeforces (`sqv1nx_`):** Rating: 976 (Newbie) | Max Rating: 1035 (Newbie)
+* **LeetCode (`sqv1n`):** 6 Problems Solved | Global Ranking: ~5,000,001
+* **AtCoder (`sqv1nx_`):** Rating: 8
+* **HackerRank (`sqv1nx`):** Level 5 | Title: `O(2^N)`
+* **HackerEarth (`sqv1nx`):** Active Developer Profile
+* **CodeChef (`sqv1nx`):** Active Profile
+* **CSES (`386419`):** 19+ Problems Solved | 38 Total Submissions
+* **USACO:** 53 Problems Solved (Locally Tracked)
+
+---
+
 ## 📂 Repository Structure
 
 The solutions are organized into directories based on the platform for easy navigation:
@@ -28,11 +41,13 @@ The solutions are organized into directories based on the platform for easy navi
 | Directory | Platform | Description |
 | :--- | :--- | :--- |
 | `CF/` | **Codeforces** | Contest solutions (Div 2, Div 3, Educational). |
-| `AT/` | **AtCoder** | Beginner (ABC) and Regular (ARC) contests. |
+| `Atcoder/` | **AtCoder** | Beginner (ABC) and Regular (ARC) contests. |
 | `CSES/` | **CSES** | Solutions to the classic CSES Problem Set. |
-| `HR/` | **HackerRank** | Domain-based challenges and interview prep. |
-| `HE/` | **HackerEarth** | Monthly circuits and specialized contests. |
-| `CC/` | **CodeChef** | Starters, Lunchtime, and Cook-Off solutions. |
+| `HackerRank/` | **HackerRank** | Domain-based challenges and interview prep. |
+| `HackerEarth/` | **HackerEarth** | Monthly circuits and specialized contests. |
+| `Kattis/` | **Kattis** | Kattis problem solutions. |
+| `USACO/` | **USACO** | USA Computing Olympiad solutions. |
+| `MISC-Special/` | **Miscellaneous** | Special or unclassified problems. |
 
 ---
 
@@ -43,3 +58,4 @@ If you wish to test a solution locally, use the following compilation flags (for
 ```bash
 g++ -O2 -Wall -std=c++17 solution.cpp -o solution
 ./solution < input.txt
+```
